@@ -6,6 +6,9 @@ on:
       - v*
 
   workflow_dispatch:
+  workflow_run:
+    workflows: ["build"]
+    types: [requested]
 
 jobs:
   build:

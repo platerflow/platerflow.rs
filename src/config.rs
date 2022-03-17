@@ -1,4 +1,3 @@
-extern crate serde_derive;
 use serde_derive::Deserialize;
 
 #[derive(Debug, Deserialize)]

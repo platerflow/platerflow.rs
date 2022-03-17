@@ -21,7 +21,7 @@ jobs:
             asset_name: platerflow.exe
           - target: x86_64-unknown-linux-musl
             os: ubuntu-latest
-            raw_name: platerflow_linux
+            raw_name: platerflow
             asset_name: platerflow_linux
           - target: x86_64-apple-darwin
             os: macos-11

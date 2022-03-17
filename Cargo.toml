@@ -1,6 +1,6 @@
 [package]
 name = "platerflow"
-version = "0.0.4"
+version = "0.0.5"
 edition = "2022"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

@@ -28,6 +28,7 @@ fn main() {
         process::exit(exitcode::OK);
     }
     let config: &Config = &config::init::read_config();
+    config::init::check_paths(config);
     processes::plater::list_files();
     processes::plater::run(config);
     processes::superslicer::run(config);

@@ -25,6 +25,41 @@ pub mod init {
     use std::env;
     use std::io;
     use std::path::PathBuf;
+    use std::path::Path;
+    use std::process;
+    
+    pub fn check_paths(config: &super::Config) {
+        if Path::new(&config.superslicer.path).exists() {
+            println!("Superslicer path verified.");
+        } else {
+            println!("Superslicer path appears to be invalid/does not exist, exiting the program.");
+            process::exit(exitcode::OK);
+        }
+        if Path::new(&config.superslicer.config_printer).exists() {
+            println!("Superslicer config printer path verified.");
+        } else {
+            println!("Superslicer config printer path appears to be invalid/does not exist, exiting the program.");
+            process::exit(exitcode::OK);
+        }
+        if Path::new(&config.superslicer.config_print).exists() {
+            println!("Superslicer print config path verified.");
+        } else {
+            println!("Superslicer print config path appears to be invalid/does not exist, exiting the program.");
+            process::exit(exitcode::OK);
+        }
+        if Path::new(&config.superslicer.config_filament).exists() {
+            println!("Superslicer filemanet config path verified.");
+        } else {
+            println!("Superslicer filament config path appears to be invalid/does not exist, exiting the program.");
+            process::exit(exitcode::OK);
+        }
+        if Path::new(&config.plater.path).exists() {
+            println!("Plater path verified.");
+        } else {
+            println!("Plater path appears to be invalid/does not exist, exiting the program.");
+            process::exit(exitcode::OK);
+        }
+    }
     
     pub fn check_present() -> bool {
         return std::path::Path::new(&get_config_path().unwrap()).exists()

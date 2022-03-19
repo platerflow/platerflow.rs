@@ -46,7 +46,6 @@ pub mod plater {
                     Err(e) => println!("{:#?}", e),
                 }
             }
-            println!("{:?}", super::glob_with(&_gid, options).expect("Failed to read glob pattern").count());
         } else {
             println!("No files detected in input");
             super::process::exit(exitcode::OK);

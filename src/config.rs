@@ -4,6 +4,7 @@ use serde_derive::Deserialize;
 pub struct Config {
     pub superslicer: Superslicer,
     pub plater: Plater,
+    pub moonraker: Moonraker,
 }
 #[derive(Debug, Deserialize)]
 pub struct Plater {
@@ -18,6 +19,10 @@ pub struct Superslicer {
     pub config_printer: String,
     pub config_print: String,
     pub config_filament: String,
+}
+#[derive(Debug, Deserialize)]
+pub struct Moonraker {
+    pub url: String,
 }
 pub mod init {
     use super::Config;
@@ -47,7 +52,7 @@ pub mod init {
             process::exit(exitcode::OK);
         }
         if Path::new(&config.superslicer.config_filament).exists() {
-            println!("Superslicer filemanet config path verified.");
+            println!("Superslicer filament config path verified.");
         } else {
             println!("Superslicer filament config path appears to be invalid/does not exist, exiting the program.");
             process::exit(exitcode::OK);
@@ -97,7 +102,9 @@ path = "D:\\Projects\\PlaterFlow\\platerbinary\\plater_cli_win.exe"
 path = "C:\\Users\\leand\\Desktop\\SuperSlicer_2.3.57.11_win64_220213\\superslicer_console.exe"
 config_printer = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\printer\\K3.ini"
 config_filament = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\filament\\FF Black K3 ASA.ini"
-config_print = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\print\\K3 ABS FF.ini""#;
+config_print = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\print\\K3 ABS FF.ini"
+[moonraker]
+url = "http://192.168.0.248""#;
         
         let f = fs::write(&get_config_path().unwrap(), config_data_sample);
         let _f = match f {

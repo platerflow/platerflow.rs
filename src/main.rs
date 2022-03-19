@@ -1,5 +1,6 @@
 mod config;
 mod processes;
+mod moonraker;
 
 use std::process;
 use std::fs;
@@ -32,4 +33,6 @@ fn main() {
     processes::plater::list_files();
     processes::plater::run(config);
     processes::superslicer::run(config);
+    moonraker::run(&config);
+    println!("We're done!");
 }

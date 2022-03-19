@@ -46,10 +46,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install musl-tools libssl-dev
-      - name: Setup mingw cross compiler
+      - name: Setup mingw cross compiler and libssl-dev
         if: matrix.target == 'x86_64-pc-windows-gnu'
         run: |
-          sudo apt-get update and libssl-dev
+          sudo apt-get update
           sudo apt-get install gcc-mingw-w64-x86-64 libssl-dev
       - uses: actions/cache@v2
         with:

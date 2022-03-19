@@ -37,25 +37,20 @@ jobs:
       
     steps:
       - uses: actions/checkout@v2
-      - name: Install libssl-dev
+      - name: Install libssl-dev on MacOS
+        if: matrix.target == 'x86_64-apple-darwin'
         run: |
-          sudo apt-get update
-          sudo apt-get install libssl-dev
-      - name: Install Pi cross compiler
-        if: matrix.target == 'armv7-unknown-linux-musleabihf'
-        run: |
-          sudo apt-get update
-          sudo apt-get install gcc-arm-linux-gnueabihf 
-      - name: Install musl-tools
+          brew install openssl
+      - name: Install musl-tools and libssl-dev
         if: matrix.target == 'x86_64-unknown-linux-musl'
         run: |
           sudo apt-get update
-          sudo apt-get install musl-tools
+          sudo apt-get install musl-tools libssl-dev
       - name: Setup mingw cross compiler
         if: matrix.target == 'x86_64-pc-windows-gnu'
         run: |
-          sudo apt-get update
-          sudo apt-get install gcc-mingw-w64-x86-64
+          sudo apt-get update and libssl-dev
+          sudo apt-get install gcc-mingw-w64-x86-64 libssl-dev
       - uses: actions/cache@v2
         with:
           path: |

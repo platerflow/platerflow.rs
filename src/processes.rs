@@ -165,17 +165,34 @@ pub mod superslicer {
         }
     }
     fn slice(path: super::PathBuf, config: &super::Config) {
-        println!("Running SuperSlicer on {:?}", path);
-        let _x = super::Exec::cmd(config.superslicer.path.to_string())
-                .arg("--load")
-                .arg(config.superslicer.config_printer.to_string())
-                .arg("--load")
-                .arg(config.superslicer.config_filament.to_string())
-                .arg("--load")
-                .arg(config.superslicer.config_print.to_string())
-                .arg("-g")
-                .arg(path)
-                .stream_stdout()
-                .unwrap();
+        let isaccent = path.clone().file_name().unwrap().to_str().unwrap().to_string();
+        if isaccent.starts_with("plater_accent") {
+            println!("Running SuperSlicer on {:?} with accent config", path);
+            let _x = super::Exec::cmd(config.superslicer.path.to_string())
+                    .arg("--load")
+                    .arg(config.superslicer.accent_config_printer.to_string())
+                    .arg("--load")
+                    .arg(config.superslicer.accent_config_filament.to_string())
+                    .arg("--load")
+                    .arg(config.superslicer.accent_config_print.to_string())
+                    .arg("-g")
+                    .arg(path)
+                    .stream_stdout()
+                    .unwrap();
+        }
+        else {
+            println!("Running SuperSlicer on {:?} with standard config", path);
+            let _x = super::Exec::cmd(config.superslicer.path.to_string())
+                    .arg("--load")
+                    .arg(config.superslicer.config_printer.to_string())
+                    .arg("--load")
+                    .arg(config.superslicer.config_filament.to_string())
+                    .arg("--load")
+                    .arg(config.superslicer.config_print.to_string())
+                    .arg("-g")
+                    .arg(path)
+                    .stream_stdout()
+                    .unwrap();
+        }
     }
 }

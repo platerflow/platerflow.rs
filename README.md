@@ -13,13 +13,6 @@ No hassle doing this all manually.
 * Does currently not upload to moonraker (yet), I'm just glad I got it working at this point.
 
 
-## TODO
-* ~~create input, output folders~~ Done
-* ~~handle no [a]~~ Done
-* ~~try to make it dummy proof by checking paths in config.toml~~ Done
-* ~~moonraker support~~ Done
-
-
 ## Install
 Download from releases or build yourself:
 

@@ -19,6 +19,9 @@ pub struct Superslicer {
     pub config_printer: String,
     pub config_print: String,
     pub config_filament: String,
+    pub accent_config_printer: String,
+    pub accent_config_print: String,
+    pub accent_config_filament: String,
 }
 #[derive(Debug, Deserialize)]
 pub struct Moonraker {
@@ -103,6 +106,9 @@ path = "C:\\Users\\leand\\Desktop\\SuperSlicer_2.3.57.11_win64_220213\\superslic
 config_printer = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\printer\\K3.ini"
 config_filament = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\filament\\FF Black K3 ASA.ini"
 config_print = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\print\\K3 ABS FF.ini"
+accent_config_printer = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\printer\\K3.ini"
+accent_config_filament = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\filament\\FF Black K3 ASA.ini"
+accent_config_print = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\print\\K3 ABS FF.ini"
 [moonraker]
 url = "http://192.168.0.248""#;
         

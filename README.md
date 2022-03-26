@@ -17,7 +17,7 @@ Download from releases or build yourself:
 ![image](https://user-images.githubusercontent.com/227830/158068869-dd6cb941-8bd0-451b-abf4-5213a5f3be55.png)
 
 ## Usage
-
+To better see what platerflow is doing it's best you open up a command terminal if you're on Windows.
 Upon first use a config.toml will be created. Edit it to your needs, then run it again. 
 
 **Keep in mind if you're on Windows to escape your \\. The first-run generated config.toml will show double \\, this is needed because Windows is retarded and you should do it too.**

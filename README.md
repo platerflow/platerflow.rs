@@ -19,7 +19,8 @@ Download from releases or build yourself:
 ## Usage
 
 Upon first use a config.toml will be created. Edit it to your needs, then run it again. 
-**Keep in mind if you're on Windows to escape your \. The first-run generated config.toml will show double \\, this is needed because Windows is retarded and you should do it too.**
+
+**Keep in mind if you're on Windows to escape your \\. The first-run generated config.toml will show double \\, this is needed because Windows is retarded and you should do it too.**
 
 Add all the STLs you want sorted in the input folder. PlaterFlow will search recursively so directories are fine too.
 

@@ -1,3 +1,5 @@
+# DEPRECATED
+
 # Plater Flow support app
 
 This application takes STL files from a directory and plates them using Plater.

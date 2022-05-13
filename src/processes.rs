@@ -96,11 +96,11 @@ pub mod plater {
             .ok()
     }
     pub fn run(config: &super::Config) {
-        use std::io::{BufRead, BufReader};
+        use std::fs;
         let cpus = num_cpus::get() / 2;
         println!("Running plater for the main color on {} cores", cpus);
         let path = &config.plater.path;
-        let x = super::Exec::cmd(&path)
+        let _exec = super::Exec::cmd(&path)
                 .arg("-W")
                 .arg(config.plater.size_x.to_string())
                 .arg("-H")
@@ -109,21 +109,16 @@ pub mod plater {
                 .arg(config.plater.size_spacing.to_string())
                 .arg("-t")
                 .arg(cpus.to_string())
-                .arg("-c")
                 .arg("-o")
                 .arg("plater_main_%d")
                 .arg(super::get_main_conf())
                 .stream_stdout()
                 .unwrap();
-        let br = BufReader::new(x);
-        for (i, line) in br.lines().enumerate() {
-            println!("{}: {}", i, line.unwrap());
-        }
         println!("Done.");
         unsafe {
             if super::CONTAINS_ACCENT {
                 println!("Running plater for the accent color on {} cores", cpus);
-                let x = super::Exec::cmd(&path)
+                let _exec = super::Exec::cmd(&path)
                         .arg("-W")
                         .arg(config.plater.size_x.to_string())
                         .arg("-H")
@@ -132,21 +127,15 @@ pub mod plater {
                         .arg(config.plater.size_spacing.to_string())
                         .arg("-t")
                         .arg(cpus.to_string())
-                        .arg("-c")
                         .arg("-o")
                         .arg("plater_accent_%d")
                         .arg(super::get_accent_conf())
                         .stream_stdout()
                         .unwrap();
-                let br = BufReader::new(x);
-                for (i, line) in br.lines().enumerate() {
-                    println!("{}: {}", i, line.unwrap());
-                }
             } else {
                 println!("No accent files detected, skipping.");
             }
         }
-        println!("Done.");
     }
 }
 

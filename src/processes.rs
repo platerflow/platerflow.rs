@@ -4,6 +4,7 @@ use std::path::*;
 use glob::*;
 use crate::config::Config;
 use std::process;
+extern crate stl_thumb;
 
 static mut CONTAINS_ACCENT: bool = false;
 
@@ -112,7 +113,7 @@ pub mod plater {
                 .arg("-o")
                 .arg("plater_main_%d")
                 .arg(super::get_main_conf())
-                .stream_stdout()
+                .join()
                 .unwrap();
         println!("Done.");
         unsafe {
@@ -130,12 +131,39 @@ pub mod plater {
                         .arg("-o")
                         .arg("plater_accent_%d")
                         .arg(super::get_accent_conf())
-                        .stream_stdout()
+                        .join()
                         .unwrap();
             } else {
                 println!("No accent files detected, skipping.");
             }
         }
+        let mut _gid: String = super::get_output_dir().display().to_string();
+        _gid.push_str("**/*.stl");
+        let options = super::MatchOptions {
+            case_sensitive: false,
+            require_literal_separator: false,
+            require_literal_leading_dot: false,
+        };
+        for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
+            match entry {
+                Ok(path) => genThumb(path),
+                Err(e) => println!("{:#?}", e),
+            }
+        }
+    }
+    pub fn genThumb(path: super::PathBuf) {
+        let mut extension = path.clone();
+        extension.set_extension("png");
+        
+        let stlRenderConfig = stl_thumb::config::Config {
+            stl_filename: path.display().to_string(),
+            img_filename: Some(extension.as_path().display().to_string()),
+            width: 1024,
+            height: 768,
+            background: (0.0, 0.0, 0.0, 0.0),
+            ..Default::default()
+        };
+        stl_thumb::render_to_file(&stlRenderConfig).expect("Error in run function");
     }
 }
 

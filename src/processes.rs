@@ -154,21 +154,24 @@ pub mod plater {
         }
     }
 }
+pub fn init_color_eyre()-> color_eyre::Result<()> {
+    color_eyre::install()?;
+    Ok(())
+}
 pub fn gen_thumb(path: PathBuf) -> color_eyre::Result<()> {
     use std::fs::File;
-    color_eyre::install()?;
     let mut extension = path.clone();
     extension.set_extension("png");
     
     let mut scene = Scene::new();
     scene.add(
-        Object::new(load_stl(File::open(path)?)?)
-            .material(Material::specular(hex_color(0xB7CA79), 0.1))
+        Object::new(load_stl(File::open(path)?)?.scale(&glm::vec3(0.01, 0.01, 0.01)))
+            .material(Material::diffuse(hex_color(0xB7CA79)))
     );
-        scene.add(
+    /*scene.add(
         Object::new(plane(glm::vec3(0.0, 1.0, 0.0), -1.0))
             .material(Material::diffuse(hex_color(0xAAAAAA))),
-    );
+    );*/
     scene.add(Light::Ambient(glm::vec3(0.01, 0.01, 0.01)));
     scene.add(Light::Object(
         Object::new(
@@ -188,14 +191,14 @@ pub fn gen_thumb(path: PathBuf) -> color_eyre::Result<()> {
     ));
 
     let camera = Camera::look_at(
-        glm::vec3(-2.5, 4.0, 6.5),
+        glm::vec3(5.0, 5.0, 5.0),
         glm::vec3(0.0, 0.0, 0.0),
-        glm::vec3(0.0, 1.0, 0.0),
+        glm::vec3(-1.0, 0.0, 1.0),
         std::f64::consts::FRAC_PI_6,
     );
     Renderer::new(&scene, camera)
-        .max_bounces(2)
-        .num_samples(1)
+        /*.max_bounces(2)
+        .num_samples(1)*/
         .render()
         .save(extension.as_path())?;
 

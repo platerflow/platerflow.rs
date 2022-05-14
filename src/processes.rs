@@ -4,7 +4,8 @@ use std::path::*;
 use glob::*;
 use crate::config::Config;
 use std::process;
-extern crate stl_thumb;
+use rpt::*;
+use color_eyre::*;
 
 static mut CONTAINS_ACCENT: bool = false;
 
@@ -97,7 +98,6 @@ pub mod plater {
             .ok()
     }
     pub fn run(config: &super::Config) {
-        use std::fs;
         let cpus = num_cpus::get() / 2;
         println!("Running plater for the main color on {} cores", cpus);
         let path = &config.plater.path;
@@ -133,6 +133,7 @@ pub mod plater {
                         .arg(super::get_accent_conf())
                         .join()
                         .unwrap();
+                println!("Done.");
             } else {
                 println!("No accent files detected, skipping.");
             }
@@ -145,28 +146,61 @@ pub mod plater {
             require_literal_leading_dot: false,
         };
         for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
-            match entry {
-                Ok(path) => genThumb(path),
+            super::gen_thumb(entry.unwrap());
+            /*match entry {
+                Ok(path) => super::gen_thumb(path),
                 Err(e) => println!("{:#?}", e),
-            }
+            }*/
         }
     }
-    pub fn genThumb(path: super::PathBuf) {
-        let mut extension = path.clone();
-        extension.set_extension("png");
-        
-        let stlRenderConfig = stl_thumb::config::Config {
-            stl_filename: path.display().to_string(),
-            img_filename: Some(extension.as_path().display().to_string()),
-            width: 1024,
-            height: 768,
-            background: (0.0, 0.0, 0.0, 0.0),
-            ..Default::default()
-        };
-        stl_thumb::render_to_file(&stlRenderConfig).expect("Error in run function");
-    }
 }
+pub fn gen_thumb(path: PathBuf) -> color_eyre::Result<()> {
+    use std::fs::File;
+    color_eyre::install()?;
+    let mut extension = path.clone();
+    extension.set_extension("png");
+    
+    let mut scene = Scene::new();
+    scene.add(
+        Object::new(load_stl(File::open(path)?)?)
+            .material(Material::specular(hex_color(0xB7CA79), 0.1))
+    );
+        scene.add(
+        Object::new(plane(glm::vec3(0.0, 1.0, 0.0), -1.0))
+            .material(Material::diffuse(hex_color(0xAAAAAA))),
+    );
+    scene.add(Light::Ambient(glm::vec3(0.01, 0.01, 0.01)));
+    scene.add(Light::Object(
+        Object::new(
+            sphere()
+                .scale(&glm::vec3(2.0, 2.0, 2.0))
+                .translate(&glm::vec3(0.0, 20.0, 3.0)),
+        )
+        .material(Material::light(glm::vec3(1.0, 1.0, 1.0), 160.0)),
+    ));
+    scene.add(Light::Object(
+        Object::new(
+            sphere()
+                .scale(&glm::vec3(0.05, 0.05, 0.05))
+                .translate(&glm::vec3(-1.0, 0.71, 0.0)),
+        )
+        .material(Material::light(hex_color(0xFFAAAA), 400.0)),
+    ));
 
+    let camera = Camera::look_at(
+        glm::vec3(-2.5, 4.0, 6.5),
+        glm::vec3(0.0, 0.0, 0.0),
+        glm::vec3(0.0, 1.0, 0.0),
+        std::f64::consts::FRAC_PI_6,
+    );
+    Renderer::new(&scene, camera)
+        .max_bounces(2)
+        .num_samples(1)
+        .render()
+        .save(extension.as_path())?;
+
+    Ok(())
+}
 pub mod superslicer {
     pub fn run(config: &super::Config) {
         let mut _gid: String = super::get_output_dir().display().to_string();
@@ -196,7 +230,7 @@ pub mod superslicer {
                     .arg(config.superslicer.accent_config_print.to_string())
                     .arg("-g")
                     .arg(path)
-                    .stream_stdout()
+                    .join()
                     .unwrap();
         }
         else {
@@ -210,7 +244,7 @@ pub mod superslicer {
                     .arg(config.superslicer.config_print.to_string())
                     .arg("-g")
                     .arg(path)
-                    .stream_stdout()
+                    .join()
                     .unwrap();
         }
     }

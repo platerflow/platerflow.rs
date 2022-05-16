@@ -4,8 +4,7 @@ use std::path::*;
 use glob::*;
 use crate::config::Config;
 use std::process;
-use rpt::*;
-use color_eyre::*;
+use crate::thumbnails::*;
 
 static mut CONTAINS_ACCENT: bool = false;
 
@@ -33,7 +32,9 @@ fn get_main_conf() -> PathBuf {
 }
 
 pub mod plater {
-    pub fn list_files() {
+    
+    
+use crate::thumbnails;pub fn list_files() {
         let mut _gid: String = super::get_input_dir().display().to_string();
         _gid.push_str("**/*.stl");
         let options = super::MatchOptions {
@@ -146,63 +147,12 @@ pub mod plater {
             require_literal_leading_dot: false,
         };
         for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
-            super::gen_thumb(entry.unwrap());
-            /*match entry {
-                Ok(path) => super::gen_thumb(path),
+            match entry {
+                Ok(path) => thumbnails::get_thumb(path),
                 Err(e) => println!("{:#?}", e),
-            }*/
+            }
         }
     }
-}
-pub fn init_color_eyre()-> color_eyre::Result<()> {
-    color_eyre::install()?;
-    Ok(())
-}
-pub fn gen_thumb(path: PathBuf) -> color_eyre::Result<()> {
-    use std::fs::File;
-    let mut extension = path.clone();
-    extension.set_extension("png");
-    
-    let mut scene = Scene::new();
-    scene.add(
-        Object::new(load_stl(File::open(path)?)?.scale(&glm::vec3(0.01, 0.01, 0.01)))
-            .material(Material::diffuse(hex_color(0xB7CA79)))
-    );
-    /*scene.add(
-        Object::new(plane(glm::vec3(0.0, 1.0, 0.0), -1.0))
-            .material(Material::diffuse(hex_color(0xAAAAAA))),
-    );*/
-    scene.add(Light::Ambient(glm::vec3(0.01, 0.01, 0.01)));
-    scene.add(Light::Object(
-        Object::new(
-            sphere()
-                .scale(&glm::vec3(2.0, 2.0, 2.0))
-                .translate(&glm::vec3(0.0, 20.0, 3.0)),
-        )
-        .material(Material::light(glm::vec3(1.0, 1.0, 1.0), 160.0)),
-    ));
-    scene.add(Light::Object(
-        Object::new(
-            sphere()
-                .scale(&glm::vec3(0.05, 0.05, 0.05))
-                .translate(&glm::vec3(-1.0, 0.71, 0.0)),
-        )
-        .material(Material::light(hex_color(0xFFAAAA), 400.0)),
-    ));
-
-    let camera = Camera::look_at(
-        glm::vec3(5.0, 5.0, 5.0),
-        glm::vec3(0.0, 0.0, 0.0),
-        glm::vec3(-1.0, 0.0, 1.0),
-        std::f64::consts::FRAC_PI_6,
-    );
-    Renderer::new(&scene, camera)
-        /*.max_bounces(2)
-        .num_samples(1)*/
-        .render()
-        .save(extension.as_path())?;
-
-    Ok(())
 }
 pub mod superslicer {
     pub fn run(config: &super::Config) {

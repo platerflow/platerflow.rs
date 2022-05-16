@@ -1,6 +1,7 @@
 mod config;
 mod processes;
 mod moonraker;
+mod thumbnails;
 
 use std::process;
 use std::fs;
@@ -8,7 +9,6 @@ use config::Config;
 use std::path::Path;
 
 fn main() {
-    processes::init_color_eyre();
     if Path::new(&processes::get_output_dir()).exists() {
         println!("Deleting output folder.");
         fs::remove_dir_all(processes::get_output_dir()).unwrap();

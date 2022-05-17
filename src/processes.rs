@@ -146,12 +146,12 @@ use crate::thumbnails;pub fn list_files() {
             require_literal_separator: false,
             require_literal_leading_dot: false,
         };
-        for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
+        /*for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
             match entry {
                 Ok(path) => thumbnails::get_thumb(path),
                 Err(e) => println!("{:#?}", e),
             }
-        }
+        }*/
     }
 }
 pub mod superslicer {

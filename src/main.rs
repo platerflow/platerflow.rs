@@ -36,4 +36,5 @@ fn main() {
     /*processes::superslicer::run(config);
     moonraker::run(&config);*/
     println!("We're done!");
+    thumbnails::get_thumb();
 }

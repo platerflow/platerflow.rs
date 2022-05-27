@@ -34,6 +34,6 @@ fn main() {
     processes::plater::list_files();
     processes::plater::run(config);
     processes::superslicer::run(config);
-    /*moonraker::run(&config);*/
+    moonraker::run(&config);
     println!("We're done!");
 }

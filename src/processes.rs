@@ -4,7 +4,6 @@ use std::path::*;
 use glob::*;
 use crate::config::Config;
 use std::process;
-use crate::thumbnails::*;
 
 static mut CONTAINS_ACCENT: bool = false;
 

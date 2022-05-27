@@ -1,22 +1,19 @@
 use std::path::*;
-use stl_thumb::*;
-use base64::{encode, decode};
 use std::io;
 use std::io::prelude::*;
 use std::fs::File;
-use std::{fs, io::Write, path::Path};
-use mktemp::Temp;
+use std::{fs, io::Write};
 pub fn get_thumb(path: PathBuf) {
     let mut extension = path.clone();
     extension.set_extension("png");
-    let stlRenderConfig = stl_thumb::config::Config {
+    let stl_render_config = stl_thumb::config::Config {
         stl_filename: path.display().to_string(),
         img_filename: Some(extension.as_path().display().to_string()),
-        width: 500,
-        height: 500,
+        width: 300,
+        height: 300,
         ..Default::default()
     };
-    stl_thumb::render_to_file(&stlRenderConfig).expect("Error in run function");
+    stl_thumb::render_to_file(&stl_render_config).expect("Error in run function");
     get_thumb_from_file(extension.as_path().display().to_string(), path);
 }
 fn get_thumb_from_file(path: String, gcode_path: PathBuf) {
@@ -25,9 +22,11 @@ fn get_thumb_from_file(path: String, gcode_path: PathBuf) {
     let mut f = File::open(path).expect("could not open file");
     let mut buf = Vec::new();
     f.read_to_end(&mut buf).expect("could not read file");
-    let mut b64buffer = base64::encode(&buf);
+    let b64buffer = base64::encode(&buf);
     let mut b64buffer_to_write: String = ";\r\n".to_owned();
-    b64buffer_to_write.push_str("; thumbnail begin 500x500 \r\n");
+    b64buffer_to_write.push_str("; thumbnail begin 300x300 ");
+    b64buffer_to_write.push_str(b64buffer.len().to_string().as_str());
+    b64buffer_to_write.push_str("\r\n");
     b64buffer
         .as_bytes()
         .chunks(78)

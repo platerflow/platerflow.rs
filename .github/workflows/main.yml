@@ -45,7 +45,7 @@ jobs:
         if: matrix.target == 'x86_64-unknown-linux-musl'
         run: |
           sudo apt-get update
-          sudo apt-get install musl-tools libssl-dev
+          sudo apt-get install musl-tools libssl-dev pkg-config
       - name: Setup mingw cross compiler and libssl-dev
         if: matrix.target == 'x86_64-pc-windows-gnu'
         run: |

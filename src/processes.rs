@@ -32,9 +32,7 @@ fn get_main_conf() -> PathBuf {
 }
 
 pub mod plater {
-    
-    
-use crate::thumbnails;pub fn list_files() {
+    pub fn list_files() {
         let mut _gid: String = super::get_input_dir().display().to_string();
         _gid.push_str("**/*.stl");
         let options = super::MatchOptions {
@@ -148,7 +146,7 @@ use crate::thumbnails;pub fn list_files() {
         };
         for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
             match entry {
-                Ok(path) => thumbnails::get_thumb(path),
+                Ok(path) => super::super::thumbnails::get_thumb(path),
                 Err(e) => println!("{:#?}", e),
             }
         }

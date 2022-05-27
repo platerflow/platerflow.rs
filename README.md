@@ -5,7 +5,7 @@ This is tailored to *my* needs and *my* needs only.
 
 ## Limitations
 
-* SuperSlicer does not output thumbnails when used in CLI mode, sadly.
+~* SuperSlicer does not output thumbnails when used in CLI mode, sadly.~ Found a workaround with stl-thumb
 
 
 ## Install

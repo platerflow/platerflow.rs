@@ -1480,6 +1480,7 @@ checksum = "1df8c4ec4b0627e53bdf214615ad287367e482558cf84b109250b37464dc03ae"
 name = "platerflow"
 version = "0.0.9"
 dependencies = [
+ "base64",
  "exitcode",
  "glob",
  "num_cpus",

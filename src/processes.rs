@@ -4,6 +4,7 @@ use std::path::*;
 use glob::*;
 use crate::config::Config;
 use std::process;
+use regex::Regex;
 
 static mut CONTAINS_ACCENT: bool = false;
 
@@ -68,10 +69,9 @@ pub mod plater {
             .open(super::get_main_conf())
             .unwrap();
         let file = filename.file_name().unwrap().to_str().unwrap().to_string();
-        let mut number = 1u32;
-        if analyze_name(&file).is_some() {
-              number = analyze_name(&file).unwrap();
-        }
+        let number = analyze_name(&file);
+
+        
         if file.starts_with("[a]") {
             if let Err(e) = writeln!(accentfile, "{} {}", filename.to_str().unwrap().to_string(), number) {
                 println!("Error writing accentfile {:?} {}", super::get_accent_conf(), e);
@@ -86,14 +86,12 @@ pub mod plater {
             }
         }
     }
-    fn analyze_name(name: &str) -> Option<u32> {
-        name
-            .to_ascii_lowercase()
-            .strip_suffix(".stl")?
-            .rsplit_once("_x")?
-            .1
-            .parse()
-            .ok()
+    fn analyze_name(name: &str) -> &str {
+        let re = super::Regex::new(r"_x([0-9]+)").unwrap();
+        match re.captures(name) {
+            Some(x) => x.get(1).unwrap().as_str(),
+            None => "1"
+        }
     }
     pub fn run(config: &super::Config) {
         let cpus = num_cpus::get() / 2;

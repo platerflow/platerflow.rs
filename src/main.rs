@@ -33,7 +33,7 @@ fn main() {
     config::init::check_paths(config);
     processes::plater::list_files();
     processes::plater::run(config);
-    /*processes::superslicer::run(config);
-    moonraker::run(&config);*/
+    processes::superslicer::run(config);
+    /*moonraker::run(&config);*/
     println!("We're done!");
 }

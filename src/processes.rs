@@ -137,19 +137,6 @@ pub mod plater {
                 println!("No accent files detected, skipping.");
             }
         }
-        let mut _gid: String = super::get_output_dir().display().to_string();
-        _gid.push_str("**/*.stl");
-        let options = super::MatchOptions {
-            case_sensitive: false,
-            require_literal_separator: false,
-            require_literal_leading_dot: false,
-        };
-        for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
-            match entry {
-                Ok(path) => super::super::thumbnails::get_thumb(path),
-                Err(e) => println!("{:#?}", e),
-            }
-        }
     }
 }
 pub mod superslicer {
@@ -170,6 +157,10 @@ pub mod superslicer {
     }
     fn slice(path: super::PathBuf, config: &super::Config) {
         let isaccent = path.clone().file_name().unwrap().to_str().unwrap().to_string();
+        let tnpath = path.clone();
+        let mut outputfile = path.clone();
+        outputfile.set_extension("gcode");
+        let outputfile = outputfile.as_path().display().to_string();
         if isaccent.starts_with("plater_accent") {
             println!("Running SuperSlicer on {:?} with accent config", path);
             let _x = super::Exec::cmd(config.superslicer.path.to_string())
@@ -180,6 +171,8 @@ pub mod superslicer {
                     .arg("--load")
                     .arg(config.superslicer.accent_config_print.to_string())
                     .arg("-g")
+                    .arg("--output")
+                    .arg(outputfile)
                     .arg(path)
                     .join()
                     .unwrap();
@@ -194,9 +187,13 @@ pub mod superslicer {
                     .arg("--load")
                     .arg(config.superslicer.config_print.to_string())
                     .arg("-g")
+                    .arg("--output")
+                    .arg(outputfile)
                     .arg(path)
                     .join()
                     .unwrap();
         }
+        println!("Generating thumbnail");
+        super::super::thumbnails::get_thumb(tnpath);
     }
 }

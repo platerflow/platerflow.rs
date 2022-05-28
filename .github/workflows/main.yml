@@ -66,6 +66,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.target }}
           override: true
+      - run: export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
       - uses: actions-rs/cargo@v1
         with:
           command: build

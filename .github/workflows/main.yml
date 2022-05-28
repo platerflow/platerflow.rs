@@ -46,11 +46,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install musl-tools libssl-dev pkg-config
+          export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
       - name: Setup mingw cross compiler and libssl-dev
         if: matrix.target == 'x86_64-pc-windows-gnu'
         run: |
           sudo apt-get update
-          sudo apt-get install gcc-mingw-w64-x86-64 libssl-dev
+          sudo apt-get install gcc-mingw-w64-x86-64 libssl-dev pkg-config
+          export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
       - uses: actions/cache@v2
         with:
           path: |

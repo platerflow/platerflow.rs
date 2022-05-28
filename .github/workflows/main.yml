@@ -23,10 +23,6 @@ jobs:
             os: ubuntu-latest
             raw_name: platerflow
             asset_name: platerflow_linux
-          - target: x86_64-apple-darwin
-            os: macos-11
-            raw_name: platerflow
-            asset_name: platerflow_osx
 
     runs-on: ${{ matrix.os }}
 
@@ -37,10 +33,6 @@ jobs:
       
     steps:
       - uses: actions/checkout@v2
-      - name: Install libssl-dev on MacOS
-        if: matrix.target == 'x86_64-apple-darwin'
-        run: |
-          brew install openssl
       - name: Install musl-tools and libssl-dev
         if: matrix.target == 'x86_64-unknown-linux-musl'
         run: |
@@ -66,7 +58,6 @@ jobs:
           toolchain: stable
           target: ${{ matrix.target }}
           override: true
-      - run: export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
       - uses: actions-rs/cargo@v1
         with:
           command: build

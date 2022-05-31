@@ -3,7 +3,8 @@
 This is my personal version of airox' awesome work on PlaterFlow. 
 This is tailored to *my* needs and *my* needs only.
 
-Support for OSX has been pulled due to dependencies not working on OSX.
+**Support for OSX has been pulled due to dependencies not working on OSX.**
+**I will look into this in the semi-near future**
 ## Limitations
 
 ~* SuperSlicer does not output thumbnails when used in CLI mode, sadly.~ Found a workaround with stl-thumb

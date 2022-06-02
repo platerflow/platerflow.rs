@@ -31,10 +31,10 @@ pub mod init {
     use super::Config;
     use std::env;
     use std::io;
-    use std::path::PathBuf;
     use std::path::Path;
+    use std::path::PathBuf;
     use std::process;
-    
+
     pub fn check_paths(config: &super::Config) {
         if Path::new(&config.superslicer.path).exists() {
             println!("Superslicer path verified.");
@@ -67,21 +67,21 @@ pub mod init {
             process::exit(exitcode::OK);
         }
     }
-    
+
     pub fn check_present() -> bool {
-        return std::path::Path::new(&get_config_path().unwrap()).exists()
+        return std::path::Path::new(&get_config_path().unwrap()).exists();
     }
-    
+
     fn get_config_path() -> io::Result<PathBuf> {
         let mut cfgfile = env::current_dir()?;
         cfgfile.push("config.toml");
         Ok(cfgfile)
-    } 
-    
+    }
+
     pub fn read_config() -> Config {
         use std::fs::File;
         use std::io::Read;
-        
+
         let f = File::open(&get_config_path().unwrap());
         let mut f = match f {
             Ok(file) => file,
@@ -90,13 +90,13 @@ pub mod init {
         let mut data = String::new();
         f.read_to_string(&mut data).unwrap();
         let decoded: Config = toml::from_str(&data).unwrap();
-        return decoded
+        return decoded;
     }
-    
+
     pub fn create_config() {
         use std::fs;
-        
-        let config_data_sample =  r#"[plater]
+
+        let config_data_sample = r#"[plater]
 size_x = 165
 size_y = 165
 size_spacing = 1
@@ -111,7 +111,7 @@ accent_config_filament = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\filam
 accent_config_print = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\print\\K3 ABS FF.ini"
 [moonraker]
 url = "http://192.168.0.248""#;
-        
+
         let f = fs::write(&get_config_path().unwrap(), config_data_sample);
         let _f = match f {
             Ok(file) => file,

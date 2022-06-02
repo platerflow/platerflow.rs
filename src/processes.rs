@@ -1,34 +1,34 @@
-use subprocess::Exec;
+use crate::config::Config;
+use glob::*;
+use regex::Regex;
 use std::env;
 use std::path::*;
-use glob::*;
-use crate::config::Config;
 use std::process;
-use regex::Regex;
+use subprocess::Exec;
 
 static mut CONTAINS_ACCENT: bool = false;
 
 pub fn get_input_dir() -> PathBuf {
     let mut currdir: PathBuf = env::current_dir().unwrap();
     currdir.push("input/");
-    return currdir
+    return currdir;
 }
 pub fn get_output_dir() -> PathBuf {
     let mut currdir: PathBuf = env::current_dir().unwrap();
     currdir.push("output/");
-    return currdir
+    return currdir;
 }
 fn get_accent_conf() -> PathBuf {
     let mut currdir: PathBuf = env::current_dir().unwrap();
     currdir.push("output/");
     currdir.push("accent.conf");
-    return currdir
+    return currdir;
 }
 fn get_main_conf() -> PathBuf {
     let mut currdir: PathBuf = env::current_dir().unwrap();
     currdir.push("output/");
     currdir.push("main.conf");
-    return currdir
+    return currdir;
 }
 
 pub mod plater {
@@ -40,7 +40,11 @@ pub mod plater {
             require_literal_separator: false,
             require_literal_leading_dot: false,
         };
-        if super::glob_with(&_gid, options).expect("Failed to read glob pattern").count() > 0 {
+        if super::glob_with(&_gid, options)
+            .expect("Failed to read glob pattern")
+            .count()
+            > 0
+        {
             for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
                 match entry {
                     Ok(path) => write_plater_conf(path),
@@ -52,7 +56,7 @@ pub mod plater {
             super::process::exit(exitcode::OK);
         }
     }
-    
+
     pub fn write_plater_conf(filename: super::PathBuf) {
         use std::fs::OpenOptions;
         use std::io::prelude::*;
@@ -71,17 +75,29 @@ pub mod plater {
         let file = filename.file_name().unwrap().to_str().unwrap().to_string();
         let number = analyze_name(&file);
 
-        
         if file.starts_with("[a]") {
-            if let Err(e) = writeln!(accentfile, "{} {}", filename.to_str().unwrap().to_string(), number) {
-                println!("Error writing accentfile {:?} {}", super::get_accent_conf(), e);
+            if let Err(e) = writeln!(
+                accentfile,
+                "{} {}",
+                filename.to_str().unwrap().to_string(),
+                number
+            ) {
+                println!(
+                    "Error writing accentfile {:?} {}",
+                    super::get_accent_conf(),
+                    e
+                );
             }
             unsafe {
                 super::CONTAINS_ACCENT = true;
             }
-        }
-        else {
-            if let Err(e) = writeln!(mainfile, "{} {}", filename.to_str().unwrap().to_string(), number) {
+        } else {
+            if let Err(e) = writeln!(
+                mainfile,
+                "{} {}",
+                filename.to_str().unwrap().to_string(),
+                number
+            ) {
                 println!("Error writing mainfile {:?} {}", super::get_main_conf(), e);
             }
         }
@@ -90,7 +106,7 @@ pub mod plater {
         let re = super::Regex::new(r"_x([0-9]+)").unwrap();
         match re.captures(name) {
             Some(x) => x.get(1).unwrap().as_str(),
-            None => "1"
+            None => "1",
         }
     }
     pub fn run(config: &super::Config) {
@@ -98,37 +114,37 @@ pub mod plater {
         println!("Running plater for the main color on {} cores", cpus);
         let path = &config.plater.path;
         let _exec = super::Exec::cmd(&path)
-                .arg("-W")
-                .arg(config.plater.size_x.to_string())
-                .arg("-H")
-                .arg(config.plater.size_y.to_string())
-                .arg("-s")
-                .arg(config.plater.size_spacing.to_string())
-                .arg("-t")
-                .arg(cpus.to_string())
-                .arg("-o")
-                .arg("plater_main_%d")
-                .arg(super::get_main_conf())
-                .join()
-                .unwrap();
+            .arg("-W")
+            .arg(config.plater.size_x.to_string())
+            .arg("-H")
+            .arg(config.plater.size_y.to_string())
+            .arg("-s")
+            .arg(config.plater.size_spacing.to_string())
+            .arg("-t")
+            .arg(cpus.to_string())
+            .arg("-o")
+            .arg("plater_main_%d")
+            .arg(super::get_main_conf())
+            .join()
+            .unwrap();
         println!("Done.");
         unsafe {
             if super::CONTAINS_ACCENT {
                 println!("Running plater for the accent color on {} cores", cpus);
                 let _exec = super::Exec::cmd(&path)
-                        .arg("-W")
-                        .arg(config.plater.size_x.to_string())
-                        .arg("-H")
-                        .arg(config.plater.size_y.to_string())
-                        .arg("-s")
-                        .arg(config.plater.size_spacing.to_string())
-                        .arg("-t")
-                        .arg(cpus.to_string())
-                        .arg("-o")
-                        .arg("plater_accent_%d")
-                        .arg(super::get_accent_conf())
-                        .join()
-                        .unwrap();
+                    .arg("-W")
+                    .arg(config.plater.size_x.to_string())
+                    .arg("-H")
+                    .arg(config.plater.size_y.to_string())
+                    .arg("-s")
+                    .arg(config.plater.size_spacing.to_string())
+                    .arg("-t")
+                    .arg(cpus.to_string())
+                    .arg("-o")
+                    .arg("plater_accent_%d")
+                    .arg(super::get_accent_conf())
+                    .join()
+                    .unwrap();
                 println!("Done.");
             } else {
                 println!("No accent files detected, skipping.");
@@ -153,7 +169,13 @@ pub mod superslicer {
         }
     }
     fn slice(path: super::PathBuf, config: &super::Config) {
-        let isaccent = path.clone().file_name().unwrap().to_str().unwrap().to_string();
+        let isaccent = path
+            .clone()
+            .file_name()
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .to_string();
         let tnpath = path.clone();
         let mut outputfile = path.clone();
         outputfile.set_extension("gcode");
@@ -161,34 +183,33 @@ pub mod superslicer {
         if isaccent.starts_with("plater_accent") {
             println!("Running SuperSlicer on {:?} with accent config", path);
             let _x = super::Exec::cmd(config.superslicer.path.to_string())
-                    .arg("--load")
-                    .arg(config.superslicer.accent_config_printer.to_string())
-                    .arg("--load")
-                    .arg(config.superslicer.accent_config_filament.to_string())
-                    .arg("--load")
-                    .arg(config.superslicer.accent_config_print.to_string())
-                    .arg("-g")
-                    .arg("--output")
-                    .arg(outputfile)
-                    .arg(path)
-                    .join()
-                    .unwrap();
-        }
-        else {
+                .arg("--load")
+                .arg(config.superslicer.accent_config_printer.to_string())
+                .arg("--load")
+                .arg(config.superslicer.accent_config_filament.to_string())
+                .arg("--load")
+                .arg(config.superslicer.accent_config_print.to_string())
+                .arg("-g")
+                .arg("--output")
+                .arg(outputfile)
+                .arg(path)
+                .join()
+                .unwrap();
+        } else {
             println!("Running SuperSlicer on {:?} with standard config", path);
             let _x = super::Exec::cmd(config.superslicer.path.to_string())
-                    .arg("--load")
-                    .arg(config.superslicer.config_printer.to_string())
-                    .arg("--load")
-                    .arg(config.superslicer.config_filament.to_string())
-                    .arg("--load")
-                    .arg(config.superslicer.config_print.to_string())
-                    .arg("-g")
-                    .arg("--output")
-                    .arg(outputfile)
-                    .arg(path)
-                    .join()
-                    .unwrap();
+                .arg("--load")
+                .arg(config.superslicer.config_printer.to_string())
+                .arg("--load")
+                .arg(config.superslicer.config_filament.to_string())
+                .arg("--load")
+                .arg(config.superslicer.config_print.to_string())
+                .arg("-g")
+                .arg("--output")
+                .arg(outputfile)
+                .arg(path)
+                .join()
+                .unwrap();
         }
         println!("Generating thumbnail");
         super::super::thumbnails::get_thumb(tnpath);

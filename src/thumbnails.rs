@@ -1,7 +1,7 @@
-use std::path::*;
+use std::fs::File;
 use std::io;
 use std::io::prelude::*;
-use std::fs::File;
+use std::path::*;
 use std::{fs, io::Write};
 pub fn get_thumb(path: PathBuf) {
     let mut extension = path.clone();
@@ -27,20 +27,18 @@ fn get_thumb_from_file(path: String, gcode_path: PathBuf) {
     b64buffer_to_write.push_str("; thumbnail begin 300x300 ");
     b64buffer_to_write.push_str(b64buffer.len().to_string().as_str());
     b64buffer_to_write.push_str("\r\n");
-    b64buffer
-        .as_bytes()
-        .chunks(78)
-        .for_each(|s| { 
-            b64buffer_to_write.push_str("; ");
-            b64buffer_to_write.push_str(unsafe { std::str::from_utf8_unchecked(s) });
-            b64buffer_to_write.push_str("\r\n");
-        });
+    b64buffer.as_bytes().chunks(78).for_each(|s| {
+        b64buffer_to_write.push_str("; ");
+        b64buffer_to_write.push_str(unsafe { std::str::from_utf8_unchecked(s) });
+        b64buffer_to_write.push_str("\r\n");
+    });
     b64buffer_to_write.push_str("; thumbnail end\r\n;\r\n");
     let mut tmp_path = gcode_path.clone();
     tmp_path.set_extension("temp");
     let mut tmp = File::create(&tmp_path).expect("Opening temp path failed");
     let mut src = File::open(&gcode_path).expect("Opening gcode file failed");
-    tmp.write_all(b64buffer_to_write.as_bytes()).expect("Writing to temp failed");
+    tmp.write_all(b64buffer_to_write.as_bytes())
+        .expect("Writing to temp failed");
     io::copy(&mut src, &mut tmp).expect("Copy failed");
     fs::remove_file(&gcode_path).expect("Remove failed");
     fs::rename(&tmp_path, &gcode_path).expect("Rename failed");

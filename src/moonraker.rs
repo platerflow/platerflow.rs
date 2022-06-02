@@ -1,8 +1,8 @@
-use reqwest::blocking::multipart;
-use std::path::*;
-use glob::*;
 use crate::config::Config;
 use crate::processes;
+use glob::*;
+use reqwest::blocking::multipart;
+use std::path::*;
 
 pub fn run(config: &Config) {
     let mut _gid: String = processes::get_output_dir().display().to_string();
@@ -22,16 +22,25 @@ pub fn run(config: &Config) {
 fn upload(path: PathBuf, config: &Config) {
     let path_str = path.to_str().unwrap();
     let moonraker_url = format!("{}/server/files/upload", config.moonraker.url);
-    
+
     let form = multipart::Form::new()
-    .text("name", "file")
-    .text("filename", Path::new(path_str).file_name().unwrap().to_os_string().into_string().unwrap())
-    .file("file", path_str).unwrap();
+        .text("name", "file")
+        .text(
+            "filename",
+            Path::new(path_str)
+                .file_name()
+                .unwrap()
+                .to_os_string()
+                .into_string()
+                .unwrap(),
+        )
+        .file("file", path_str)
+        .unwrap();
 
     let client = reqwest::blocking::Client::new();
-    let _resp = client
-        .post(moonraker_url)
-        .multipart(form)
-        .send().unwrap();
-    println!("Uploaded {} to moonraker at: {}", path_str, config.moonraker.url);
+    let _resp = client.post(moonraker_url).multipart(form).send().unwrap();
+    println!(
+        "Uploaded {} to moonraker at: {}",
+        path_str, config.moonraker.url
+    );
 }

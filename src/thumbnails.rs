@@ -17,7 +17,7 @@ pub fn get_thumb(path: PathBuf) {
     get_thumb_from_file(extension.as_path().display().to_string(), path);
 }
 fn get_thumb_from_file(path: String, gcode_path: PathBuf) {
-    let mut gcode_path = gcode_path.clone();
+    let mut gcode_path = gcode_path;
     gcode_path.set_extension("gcode");
     let mut f = File::open(path).expect("could not open file");
     let mut buf = Vec::new();

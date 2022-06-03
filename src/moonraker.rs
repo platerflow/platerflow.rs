@@ -14,7 +14,7 @@ pub fn run(config: &Config) {
     };
     for entry in glob_with(&_gid, options).expect("Failed to read glob pattern") {
         match entry {
-            Ok(path) => upload(path, &config),
+            Ok(path) => upload(path, config),
             Err(e) => println!("{:#?}", e),
         }
     }

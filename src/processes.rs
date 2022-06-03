@@ -79,7 +79,7 @@ pub mod plater {
             if let Err(e) = writeln!(
                 accentfile,
                 "{} {}",
-                filename.to_str().unwrap().to_string(),
+                filename.to_str().unwrap(),
                 number
             ) {
                 println!(
@@ -91,15 +91,13 @@ pub mod plater {
             unsafe {
                 super::CONTAINS_ACCENT = true;
             }
-        } else {
-            if let Err(e) = writeln!(
-                mainfile,
-                "{} {}",
-                filename.to_str().unwrap().to_string(),
-                number
-            ) {
-                println!("Error writing mainfile {:?} {}", super::get_main_conf(), e);
-            }
+        } else if let Err(e) = writeln!(
+            mainfile,
+            "{} {}",
+            filename.to_str().unwrap(),
+            number
+        ) {
+            println!("Error writing mainfile {:?} {}", super::get_main_conf(), e);
         }
     }
     fn analyze_name(name: &str) -> &str {
@@ -163,14 +161,14 @@ pub mod superslicer {
         };
         for entry in super::glob_with(&_gid, options).expect("Failed to read glob pattern") {
             match entry {
-                Ok(path) => slice(path, &config),
+                Ok(path) => slice(path, config),
                 Err(e) => println!("{:#?}", e),
             }
         }
     }
     fn slice(path: super::PathBuf, config: &super::Config) {
         let isaccent = path
-            .clone()
+            
             .file_name()
             .unwrap()
             .to_str()
@@ -182,13 +180,13 @@ pub mod superslicer {
         let outputfile = outputfile.as_path().display().to_string();
         if isaccent.starts_with("plater_accent") {
             println!("Running SuperSlicer on {:?} with accent config", path);
-            let _x = super::Exec::cmd(config.superslicer.path.to_string())
+            let _x = super::Exec::cmd(&config.superslicer.path)
                 .arg("--load")
-                .arg(config.superslicer.accent_config_printer.to_string())
+                .arg(&config.superslicer.accent_config_printer)
                 .arg("--load")
-                .arg(config.superslicer.accent_config_filament.to_string())
+                .arg(&config.superslicer.accent_config_filament)
                 .arg("--load")
-                .arg(config.superslicer.accent_config_print.to_string())
+                .arg(&config.superslicer.accent_config_print)
                 .arg("-g")
                 .arg("--output")
                 .arg(outputfile)
@@ -197,13 +195,13 @@ pub mod superslicer {
                 .unwrap();
         } else {
             println!("Running SuperSlicer on {:?} with standard config", path);
-            let _x = super::Exec::cmd(config.superslicer.path.to_string())
+            let _x = super::Exec::cmd(&config.superslicer.path)
                 .arg("--load")
-                .arg(config.superslicer.config_printer.to_string())
+                .arg(&config.superslicer.config_printer)
                 .arg("--load")
-                .arg(config.superslicer.config_filament.to_string())
+                .arg(&config.superslicer.config_filament)
                 .arg("--load")
-                .arg(config.superslicer.config_print.to_string())
+                .arg(&config.superslicer.config_print)
                 .arg("-g")
                 .arg("--output")
                 .arg(outputfile)

@@ -11,24 +11,24 @@ static mut CONTAINS_ACCENT: bool = false;
 pub fn get_input_dir() -> PathBuf {
     let mut currdir: PathBuf = env::current_dir().unwrap();
     currdir.push("input/");
-    return currdir;
+    currdir
 }
 pub fn get_output_dir() -> PathBuf {
     let mut currdir: PathBuf = env::current_dir().unwrap();
     currdir.push("output/");
-    return currdir;
+    currdir
 }
 fn get_accent_conf() -> PathBuf {
     let mut currdir: PathBuf = env::current_dir().unwrap();
     currdir.push("output/");
     currdir.push("accent.conf");
-    return currdir;
+    currdir
 }
 fn get_main_conf() -> PathBuf {
     let mut currdir: PathBuf = env::current_dir().unwrap();
     currdir.push("output/");
     currdir.push("main.conf");
-    return currdir;
+    currdir
 }
 
 pub mod plater {

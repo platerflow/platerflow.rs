@@ -90,7 +90,7 @@ pub mod init {
         let mut data = String::new();
         f.read_to_string(&mut data).unwrap();
         let decoded: Config = toml::from_str(&data).unwrap();
-        return decoded;
+        decoded
     }
 
     pub fn create_config() {

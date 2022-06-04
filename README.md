@@ -1,28 +1,24 @@
 # Plater Flow support app
 
 This is my personal version of airox' awesome work on PlaterFlow. 
-This is tailored to *my* needs and *my* needs only.
 
-**Support for OSX has been pulled due to dependencies not working on OSX.**
-**I will look into this in the semi-near future**
+This is tailored to *my* needs and *my* needs only.
 
 ## Limitations
 
-* No MacOS support
+* Superslicer is quite chatty 
 
 
 ## Install
-Download from releases or build yourself:
-
-![image](https://user-images.githubusercontent.com/227830/158068869-dd6cb941-8bd0-451b-abf4-5213a5f3be55.png)
+Download from releases or build yourself. 
 
 ## Usage
-To better see what platerflow is doing it's best you open up a command terminal if you're on Windows.
-Upon first use a config.toml will be created. Edit it to your needs, then run it again. 
-
-**Keep in mind if you're on Windows to escape your \\. The first-run generated config.toml will show double \\, this is needed because Windows is retarded and you should do it too.**
-
-Add all the STLs you want sorted in the input folder. PlaterFlow will search recursively so directories are fine too.
-
-
-![image](https://user-images.githubusercontent.com/227830/158069084-b97994f7-11f7-482e-baba-c36c8a8f8023.png)
+1) Download from releases or build yourself.
+2) Move the downloaded platerflow executable to a folder of it's own.
+3) Open a terminal and navigate to where platerflow is located
+4) Run platerflow (Windows: platerflow.exe, Linux: ./platerflow, MacOS: ./platerflow (might need to chmod to executable in Linux/Mac case))
+5) You will see newly generated files and folders.
+6) Edit config.toml to your needs. Keep in mind: Windows is stupid, escape your \ with another \; the example config generated shows this too.
+7) Put STLs you want sorted into the input folder. Platerflow will recognize \[a\] files as accent files and will read the number of times it needs to print this too. Directories are fine too and will be searched recursively.
+8) Run platerflow again (see 4)
+9) Profit???

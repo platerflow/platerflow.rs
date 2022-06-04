@@ -17,7 +17,7 @@ exitcode = "1.1.2"
 glob = "0.3.0"
 num_cpus = "1.13.1"
 reqwest = { version = "0.11.10", features = ["blocking", "multipart"] }
-stl-thumb = { git = 'https://github.com/LeandroMarceddu/stl-thumb' }
+stl2thumbnail = { git = 'https://github.com/platerflow/stl2thumbnail_rs' }
 base64 = "0.13.0"
 regex = "1.5.6"
 openssl-sys = {version = "0.9.73", features = ["vendored"]}

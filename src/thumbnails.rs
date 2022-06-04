@@ -2,19 +2,68 @@ use std::fs::File;
 use std::io;
 use std::io::prelude::*;
 use std::path::*;
+use std::time::Duration;
 use std::{fs, io::Write};
+struct Settings {
+    recalculate_normals: bool,
+    size_hint: bool,
+    grid: bool,
+    cam_elevation: f32,
+    cam_azimuth: f32,
+    timeout: Option<Duration>,
+}
 pub fn get_thumb(path: PathBuf) {
     let mut extension = path.clone();
     extension.set_extension("png");
-    let stl_render_config = stl_thumb::config::Config {
-        stl_filename: path.display().to_string(),
-        img_filename: Some(extension.as_path().display().to_string()),
-        width: 300,
-        height: 300,
-        ..Default::default()
+    let settings = Settings {
+        recalculate_normals: true,
+        size_hint: false,
+        grid: false,
+        cam_elevation: 25.0,
+        cam_azimuth: 45.0,
+        timeout: None,
     };
-    stl_thumb::render_to_file(&stl_render_config).expect("Error in run function");
+    let input = path.as_path().display().to_string();
+    let output = extension.as_path().display().to_string();
+
+    let width = 500;
+    let height = 500;
+    let mut parser = stl2thumbnail::parser::Parser::from_file(&input, settings.recalculate_normals)
+        .unwrap_or_else(|error| {
+            panic!("Parser problem: {:?}", error);
+        });
+    let parsed_mesh = parser.read_all().unwrap_or_else(|error| {
+        panic!("Mesher problem: {:?}", error);
+    });
+    create_still(width, height, &parsed_mesh, &output, &settings);
+
     get_thumb_from_file(extension.as_path().display().to_string(), path);
+}
+fn create_still(
+    width: u32,
+    height: u32,
+    mesh: impl IntoIterator<Item = stl2thumbnail::mesh::Triangle> + Copy,
+    path: &str,
+    settings: &Settings,
+) {
+    let _elevation_angle = settings.cam_elevation * std::f32::consts::PI / 180.0;
+    let mut backend = stl2thumbnail::rasterbackend::RasterBackend::new(width, height);
+    backend.render_options.grid_visible = settings.grid;
+
+    backend.render_options.view_pos = stl2thumbnail::mesh::Vec3::new(
+        settings.cam_azimuth.to_radians().cos(),
+        settings.cam_azimuth.to_radians().sin(),
+        -settings.cam_elevation.to_radians().tan(),
+    );
+
+    let (aabb, scale) = backend.fit_mesh_scale(mesh);
+    backend.render_options.zoom = 1.05;
+    backend.render_options.draw_size_hint = settings.size_hint;
+
+    backend
+        .render(mesh, scale, &aabb, settings.timeout)
+        .save(path)
+        .expect("Error in render function");
 }
 fn get_thumb_from_file(path: String, gcode_path: PathBuf) {
     let mut gcode_path = gcode_path;

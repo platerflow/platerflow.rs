@@ -76,12 +76,7 @@ pub mod plater {
         let number = analyze_name(&file);
 
         if file.starts_with("[a]") {
-            if let Err(e) = writeln!(
-                accentfile,
-                "{} {}",
-                filename.to_str().unwrap(),
-                number
-            ) {
+            if let Err(e) = writeln!(accentfile, "{} {}", filename.to_str().unwrap(), number) {
                 println!(
                     "Error writing accentfile {:?} {}",
                     super::get_accent_conf(),
@@ -91,12 +86,7 @@ pub mod plater {
             unsafe {
                 super::CONTAINS_ACCENT = true;
             }
-        } else if let Err(e) = writeln!(
-            mainfile,
-            "{} {}",
-            filename.to_str().unwrap(),
-            number
-        ) {
+        } else if let Err(e) = writeln!(mainfile, "{} {}", filename.to_str().unwrap(), number) {
             println!("Error writing mainfile {:?} {}", super::get_main_conf(), e);
         }
     }
@@ -167,13 +157,7 @@ pub mod superslicer {
         }
     }
     fn slice(path: super::PathBuf, config: &super::Config) {
-        let isaccent = path
-            
-            .file_name()
-            .unwrap()
-            .to_str()
-            .unwrap()
-            .to_string();
+        let isaccent = path.file_name().unwrap().to_str().unwrap().to_string();
         let tnpath = path.clone();
         let mut outputfile = path.clone();
         outputfile.set_extension("gcode");

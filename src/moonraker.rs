@@ -1,9 +1,9 @@
 use crate::config::Config;
 use crate::processes;
+use colored::*;
 use glob::*;
 use reqwest::blocking::multipart;
 use std::path::*;
-use colored::*;
 
 pub fn run(config: &Config) {
     let mut _gid: String = processes::get_output_dir().display().to_string();

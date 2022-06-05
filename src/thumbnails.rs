@@ -1,10 +1,10 @@
+use colored::*;
 use std::fs::File;
 use std::io;
 use std::io::prelude::*;
 use std::path::*;
 use std::time::Duration;
 use std::{fs, io::Write};
-use colored::*;
 struct Settings {
     recalculate_normals: bool,
     size_hint: bool,

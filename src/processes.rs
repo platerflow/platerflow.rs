@@ -102,7 +102,7 @@ pub mod plater {
         let cpus = num_cpus::get() / 2;
         print!("{}", "Running plater for the main color on ".blue().bold());
         print!("{} ", cpus.to_string().blue().bold());
-        println!("{}", "cores".blue().bold());    
+        println!("{}", "cores".blue().bold());
         let path = &config.plater.path;
         let _exec = super::Exec::cmd(&path)
             .arg("-W")
@@ -169,7 +169,12 @@ pub mod superslicer {
         outputfile.set_extension("gcode");
         let outputfile = outputfile.as_path().display().to_string();
         if isaccent.starts_with("platerflow_accent") {
-            print!("{}", "Running SuperSlicer on for the main color on ".blue().bold());
+            print!(
+                "{}",
+                "Running SuperSlicer on for the main color on "
+                    .blue()
+                    .bold()
+            );
             print!("{}", path.display().to_string().blue().bold());
             println!("{}", " with accent config".blue().bold());
             let _x = super::Exec::cmd(&config.superslicer.path)
@@ -186,7 +191,12 @@ pub mod superslicer {
                 .capture()
                 .unwrap();
         } else {
-            print!("{}", "Running SuperSlicer on for the main color on ".blue().bold());
+            print!(
+                "{}",
+                "Running SuperSlicer on for the main color on "
+                    .blue()
+                    .bold()
+            );
             print!("{}", path.display().to_string().blue().bold());
             println!("{}", " with standard config".blue().bold());
             let _x = super::Exec::cmd(&config.superslicer.path)

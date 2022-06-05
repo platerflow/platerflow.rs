@@ -3,11 +3,11 @@ mod moonraker;
 mod processes;
 mod thumbnails;
 
+use colored::*;
 use config::Config;
 use std::fs;
 use std::path::Path;
 use std::process;
-use colored::*;
 
 fn main() {
     if Path::new(&processes::get_output_dir()).exists() {
@@ -25,8 +25,11 @@ fn main() {
     } else {
         println!("{}", "No config found, creating one.".red().bold());
         config::init::create_config();
-        println!("{}", 
-            "Due to current development, we're closing this app for the time being so you can edit".red().bold()
+        println!(
+            "{}",
+            "Due to current development, we're closing this app for the time being so you can edit"
+                .red()
+                .bold()
         );
         println!("{}", "the config.toml currently created in the directory of which this app is located. Fire me up when ready! ;)".red().bold());
         process::exit(exitcode::OK);

@@ -4,6 +4,7 @@ use std::io::prelude::*;
 use std::path::*;
 use std::time::Duration;
 use std::{fs, io::Write};
+use colored::*;
 struct Settings {
     recalculate_normals: bool,
     size_hint: bool,
@@ -91,5 +92,5 @@ fn get_thumb_from_file(path: String, gcode_path: PathBuf) {
     io::copy(&mut src, &mut tmp).expect("Copy failed");
     fs::remove_file(&gcode_path).expect("Remove failed");
     fs::rename(&tmp_path, &gcode_path).expect("Rename failed");
-    println!("Thumbnail finished");
+    println!("{}", "Thumbnail finished".blue().bold());
 }

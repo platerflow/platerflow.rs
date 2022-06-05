@@ -32,6 +32,7 @@ fn get_main_conf() -> PathBuf {
 }
 
 pub mod plater {
+    use colored::*;
     pub fn list_files() {
         let mut _gid: String = super::get_input_dir().display().to_string();
         _gid.push_str("**/*.stl");
@@ -52,7 +53,7 @@ pub mod plater {
                 }
             }
         } else {
-            println!("No files detected in input");
+            println!("{}", "No files detected in input".red().bold());
             super::process::exit(exitcode::OK);
         }
     }
@@ -99,7 +100,9 @@ pub mod plater {
     }
     pub fn run(config: &super::Config) {
         let cpus = num_cpus::get() / 2;
-        println!("Running plater for the main color on {} cores", cpus);
+        print!("{}", "Running plater for the main color on ".blue().bold());
+        print!("{} ", cpus.to_string().blue().bold());
+        println!("{}", "cores".blue().bold());    
         let path = &config.plater.path;
         let _exec = super::Exec::cmd(&path)
             .arg("-W")
@@ -111,14 +114,16 @@ pub mod plater {
             .arg("-t")
             .arg(cpus.to_string())
             .arg("-o")
-            .arg("plater_main_%d")
+            .arg("platerflow_main_%d")
             .arg(super::get_main_conf())
-            .join()
+            .capture()
             .unwrap();
-        println!("Done.");
+        println!("{}", "Done.".green().bold());
         unsafe {
             if super::CONTAINS_ACCENT {
-                println!("Running plater for the accent color on {} cores", cpus);
+                print!("{}", "Running plater for the main color on ".blue().bold());
+                print!("{} ", cpus.to_string().blue().bold());
+                println!("{}", "cores".blue().bold());
                 let _exec = super::Exec::cmd(&path)
                     .arg("-W")
                     .arg(config.plater.size_x.to_string())
@@ -129,18 +134,19 @@ pub mod plater {
                     .arg("-t")
                     .arg(cpus.to_string())
                     .arg("-o")
-                    .arg("plater_accent_%d")
+                    .arg("platerflow_accent_%d")
                     .arg(super::get_accent_conf())
-                    .join()
+                    .capture()
                     .unwrap();
-                println!("Done.");
+                println!("{}", "Done.".green().bold());
             } else {
-                println!("No accent files detected, skipping.");
+                println!("{}", "No accent files detected, skipping.".magenta());
             }
         }
     }
 }
 pub mod superslicer {
+    use colored::*;
     pub fn run(config: &super::Config) {
         let mut _gid: String = super::get_output_dir().display().to_string();
         _gid.push_str("**/*.stl");
@@ -162,8 +168,10 @@ pub mod superslicer {
         let mut outputfile = path.clone();
         outputfile.set_extension("gcode");
         let outputfile = outputfile.as_path().display().to_string();
-        if isaccent.starts_with("plater_accent") {
-            println!("Running SuperSlicer on {:?} with accent config", path);
+        if isaccent.starts_with("platerflow_accent") {
+            print!("{}", "Running SuperSlicer on for the main color on ".blue().bold());
+            print!("{}", path.display().to_string().blue().bold());
+            println!("{}", " with accent config".blue().bold());
             let _x = super::Exec::cmd(&config.superslicer.path)
                 .arg("--load")
                 .arg(&config.superslicer.accent_config_printer)
@@ -175,10 +183,12 @@ pub mod superslicer {
                 .arg("--output")
                 .arg(outputfile)
                 .arg(path)
-                .join()
+                .capture()
                 .unwrap();
         } else {
-            println!("Running SuperSlicer on {:?} with standard config", path);
+            print!("{}", "Running SuperSlicer on for the main color on ".blue().bold());
+            print!("{}", path.display().to_string().blue().bold());
+            println!("{}", " with standard config".blue().bold());
             let _x = super::Exec::cmd(&config.superslicer.path)
                 .arg("--load")
                 .arg(&config.superslicer.config_printer)
@@ -190,10 +200,10 @@ pub mod superslicer {
                 .arg("--output")
                 .arg(outputfile)
                 .arg(path)
-                .join()
+                .capture()
                 .unwrap();
         }
-        println!("Generating thumbnail");
+        println!("{}", "Generating thumbnail".blue().bold());
         super::super::thumbnails::get_thumb(tnpath);
     }
 }

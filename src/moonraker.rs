@@ -3,6 +3,7 @@ use crate::processes;
 use glob::*;
 use reqwest::blocking::multipart;
 use std::path::*;
+use colored::*;
 
 pub fn run(config: &Config) {
     let mut _gid: String = processes::get_output_dir().display().to_string();
@@ -39,8 +40,9 @@ fn upload(path: PathBuf, config: &Config) {
 
     let client = reqwest::blocking::Client::new();
     let _resp = client.post(moonraker_url).multipart(form).send().unwrap();
-    println!(
-        "Uploaded {} to moonraker at: {}",
-        path_str, config.moonraker.url
-    );
+
+    print!("{}", "Uploaded ".magenta());
+    print!("{}", path_str.to_string().magenta());
+    print!("{}", " to moonraker at: ".magenta());
+    println!("{}", config.moonraker.url.magenta());
 }

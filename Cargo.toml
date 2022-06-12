@@ -2,6 +2,11 @@
 name = "platerflow"
 version = "0.1.2"
 edition = "2021"
+license = "MIT"
+description = "Fully automatic 3D Slicing with Plater and SuperSlicer"
+homepage = "https://github.com/platerflow"
+repository = "https://github.com/platerflow/platerflow.rs"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [profile.dev]
@@ -17,7 +22,7 @@ exitcode = "1.1.2"
 glob = "0.3.0"
 num_cpus = "1.13.1"
 reqwest = { version = "0.11.10", features = ["blocking", "multipart"] }
-stl2thumbnail = { git = 'https://github.com/platerflow/stl2thumbnail_rs' }
+stl2thumbnail = { version = "1.0.0", git = 'https://github.com/platerflow/stl2thumbnail_rs' }
 base64 = "0.13.0"
 regex = "1.5.6"
 openssl-sys = {version = "0.9.73", features = ["vendored"]}

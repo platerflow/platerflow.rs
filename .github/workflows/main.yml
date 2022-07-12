@@ -36,7 +36,7 @@ jobs:
       CC_armv7_unknown_linux_musleabihf: arm-linux-gnueabihf-gcc
       
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install libssl-dev on MacOS
         if: matrix.target == 'x86_64-apple-darwin'
         run: |

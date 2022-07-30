@@ -8,8 +8,25 @@ use config::Config;
 use std::fs;
 use std::path::Path;
 use std::process;
+use clap::{arg, command, ArgAction};
 
 fn main() {
+    let clap_args = command!()
+        .arg(
+            arg!(
+                --noslice "Don't slice the files with superslicer" 
+            )
+            .required(false)
+            .action(ArgAction::SetTrue),
+        )
+        .arg(
+            arg!(
+                --noupload "Don't upload the files with superslicer" 
+            )
+            .required(false)
+            .action(ArgAction::SetTrue),
+        )
+        .get_matches();
     if Path::new(&processes::get_output_dir()).exists() {
         println!("{}", "Deleting output folder.".magenta());
         fs::remove_dir_all(processes::get_output_dir()).unwrap();
@@ -38,7 +55,11 @@ fn main() {
     config::init::check_paths(config);
     processes::plater::list_files();
     processes::plater::run(config);
-    processes::superslicer::run(config);
-    moonraker::run(config);
+    if !*clap_args.get_one::<bool>("noslice").expect("clapdefault") {
+        processes::superslicer::run(config);
+    }
+    if !*clap_args.get_one::<bool>("noupload").expect("clapdefault") {
+        moonraker::run(config);
+    }
     println!("{}", "We're done!".green().bold());
 }

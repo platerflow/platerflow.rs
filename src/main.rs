@@ -3,25 +3,25 @@ mod moonraker;
 mod processes;
 mod thumbnails;
 
+use clap::{arg, command, ArgAction};
 use colored::*;
 use config::Config;
 use std::fs;
 use std::path::Path;
 use std::process;
-use clap::{arg, command, ArgAction};
 
 fn main() {
     let clap_args = command!()
         .arg(
             arg!(
-                --noslice "Don't slice the files with superslicer" 
+                --noslice "Don't slice the files with superslicer"
             )
             .required(false)
             .action(ArgAction::SetTrue),
         )
         .arg(
             arg!(
-                --noupload "Don't upload the files with superslicer" 
+                --noupload "Don't upload the files with superslicer"
             )
             .required(false)
             .action(ArgAction::SetTrue),

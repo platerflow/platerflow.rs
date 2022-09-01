@@ -11,7 +11,7 @@ pub struct Plater {
     pub path: String,
     pub size_x: u8,
     pub size_y: u8,
-    pub size_spacing: u8,
+    pub size_spacing: f32,
 }
 #[derive(Debug, Deserialize)]
 pub struct Superslicer {

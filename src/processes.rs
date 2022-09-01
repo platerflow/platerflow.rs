@@ -5,7 +5,7 @@ use std::env;
 use std::path::*;
 use std::process;
 use subprocess::Exec;
-
+use std::{thread, time};
 static mut CONTAINS_ACCENT: bool = false;
 
 pub fn get_input_dir() -> PathBuf {
@@ -99,7 +99,7 @@ pub mod plater {
         }
     }
     pub fn run(config: &super::Config) {
-        let cpus = num_cpus::get() / 2;
+        let cpus = num_cpus::get();
         print!("{}", "Running plater for the main color on ".blue().bold());
         print!("{} ", cpus.to_string().blue().bold());
         println!("{}", "cores".blue().bold());
@@ -216,6 +216,8 @@ pub mod superslicer {
                 .unwrap();
         }
         println!("{}", "Generating thumbnail".blue().bold());
+        let ten_seconds = super::time::Duration::from_secs(10);
+        super::thread::sleep(ten_seconds);
         super::super::thumbnails::get_thumb(tnpath);
     }
 }

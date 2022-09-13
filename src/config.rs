@@ -119,7 +119,7 @@ pub mod init {
         let config_data_sample = r#"[plater]
 size_x = 165
 size_y = 165
-size_spacing = 1
+size_spacing = 1.0
 path = "D:\\Projects\\PlaterFlow\\platerbinary\\plater_cli_win.exe"
 [superslicer]
 path = "C:\\Users\\leand\\Desktop\\SuperSlicer_2.3.57.11_win64_220213\\superslicer_console.exe"

@@ -5,6 +5,7 @@ use std::io::prelude::*;
 use std::path::*;
 use std::time::Duration;
 use std::{fs, io::Write};
+use glob::*;
 struct Settings {
     recalculate_normals: bool,
     size_hint: bool,
@@ -20,7 +21,7 @@ pub fn get_thumb(path: PathBuf) {
         recalculate_normals: true,
         size_hint: false,
         grid: false,
-        cam_elevation: 25.0,
+        cam_elevation: 35.0,
         cam_azimuth: 45.0,
         timeout: None,
     };
@@ -67,8 +68,17 @@ fn create_still(
         .expect("Error in render function");
 }
 fn get_thumb_from_file(path: String, gcode_path: PathBuf) {
-    let mut gcode_path = gcode_path;
-    gcode_path.set_extension("gcode");
+
+    let gcode_path_stem = format!("{}*.gcode", gcode_path.with_extension("").display());
+    //println!("{}*", gcode_path.with_extension("").display());
+    let options = MatchOptions {
+        case_sensitive: false,
+        require_literal_separator: false,
+        require_literal_leading_dot: false,
+    };
+    let gcode_path = glob_with(&gcode_path_stem, options).expect("Failed to read glob pattern").nth(0).unwrap().expect("Failed to read glob pattern");
+  
+    
     let mut f = File::open(path).expect("could not open file");
     let mut buf = Vec::new();
     f.read_to_end(&mut buf).expect("could not read file");

@@ -185,8 +185,6 @@ pub mod superslicer {
                 .arg("--load")
                 .arg(&config.superslicer.accent_config_print)
                 .arg("-g")
-                .arg("--output")
-                .arg(outputfile)
                 .arg(path)
                 .capture()
                 .unwrap();
@@ -207,8 +205,6 @@ pub mod superslicer {
                 .arg("--load")
                 .arg(&config.superslicer.config_print)
                 .arg("-g")
-                .arg("--output")
-                .arg(outputfile)
                 .arg(path)
                 .capture()
                 .unwrap();

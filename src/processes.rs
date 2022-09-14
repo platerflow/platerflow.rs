@@ -4,8 +4,8 @@ use regex::Regex;
 use std::env;
 use std::path::*;
 use std::process;
-use subprocess::Exec;
 use std::{thread, time};
+use subprocess::Exec;
 static mut CONTAINS_ACCENT: bool = false;
 
 pub fn get_input_dir() -> PathBuf {
@@ -206,7 +206,7 @@ pub mod superslicer {
                 .arg(&config.superslicer.config_filament)
                 .arg("--load")
                 .arg(&config.superslicer.config_print)
-                .arg("-g") 
+                .arg("-g")
                 .arg("--output")
                 .arg(outputfile)
                 .arg(path)

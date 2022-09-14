@@ -165,9 +165,6 @@ pub mod superslicer {
     fn slice(path: super::PathBuf, config: &super::Config) {
         let isaccent = path.file_name().unwrap().to_str().unwrap().to_string();
         let tnpath = path.clone();
-        let mut outputfile = path.clone();
-        outputfile.set_extension("gcode");
-        let outputfile = outputfile.as_path().display().to_string();
         if isaccent.starts_with("platerflow_accent") {
             print!(
                 "{}",

@@ -790,7 +790,7 @@ checksum = "1df8c4ec4b0627e53bdf214615ad287367e482558cf84b109250b37464dc03ae"
 
 [[package]]
 name = "platerflow"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "base64",
  "clap 3.2.22",

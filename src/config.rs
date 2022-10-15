@@ -9,8 +9,8 @@ pub struct Config {
 #[derive(Debug, Deserialize)]
 pub struct Plater {
     pub path: String,
-    pub size_x: u8,
-    pub size_y: u8,
+    pub size_x: u16,
+    pub size_y: u16,
     pub size_spacing: f32,
 }
 #[derive(Debug, Deserialize)]
@@ -133,7 +133,7 @@ accent_config_print = "C:\\Users\\leand\\AppData\\Roaming\\SuperSlicer\\print\\K
 url = "http://192.168.0.248""#;
 
         let f = fs::write(&get_config_path().unwrap(), config_data_sample);
-        let _f = match f {
+        match f {
             Ok(file) => file,
             Err(error) => panic!("Problem opening the file: {:?}", error),
         };

@@ -8,7 +8,6 @@ This is tailored to *my* needs and *my* needs only.
 
 * Superslicer is quite chatty 
 
-
 ## Install
 Download from releases or build yourself. 
 
@@ -22,3 +21,6 @@ Download from releases or build yourself.
 7) Put STLs you want sorted into the input folder. Platerflow will recognize \[a\] files as accent files and will read the number of times it needs to print this too. Directories are fine too and will be searched recursively.
 8) Run platerflow again (see 4)
 9) Profit???
+
+## Acknowledgements
+This project includes pre-compiled versions of the Plater tool by Rhoban. You can find the project on [Github](https://github.com/Rhoban/Plater) .

@@ -25,6 +25,6 @@ stl2thumbnail = { version = "1.0.0", git = 'https://github.com/platerflow/stl2th
 base64 = "0.13.0"
 regex = "1.6.0"
 colored = "2"
-clap = { version = "4.0.29", features = ["cargo"] }
+clap = { version = "4.1.11", features = ["cargo"] }
 openssl-sys = {version = "0.9.78", features = ["vendored"]}
 

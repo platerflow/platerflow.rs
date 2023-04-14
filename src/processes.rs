@@ -121,7 +121,7 @@ pub mod plater {
         println!("{}", "Done.".green().bold());
         unsafe {
             if super::CONTAINS_ACCENT {
-                print!("{}", "Running plater for the main color on ".blue().bold());
+                print!("{}", "Running plater for the accent color on ".blue().bold());
                 print!("{} ", cpus.to_string().blue().bold());
                 println!("{}", "cores".blue().bold());
                 let _exec = super::Exec::cmd(&path)
@@ -168,7 +168,7 @@ pub mod superslicer {
         if isaccent.starts_with("platerflow_accent") {
             print!(
                 "{}",
-                "Running SuperSlicer on for the main color on "
+                "Running SuperSlicer on for the accent color on "
                     .blue()
                     .bold()
             );

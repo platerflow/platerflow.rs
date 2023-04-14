@@ -9,8 +9,12 @@ use config::Config;
 use std::fs;
 use std::path::Path;
 use std::process;
+use chrono::Local;
 
 fn main() {
+    let pfrun = format!("PFRun-{}", Local::now().format("%y%m%d-%H%M"));
+    print!("{}", "This PlaterFlow run will be known as ".red().bold());
+    println!("{}", pfrun.red().bold());
     let clap_args = command!()
         .arg(
             arg!(
@@ -59,7 +63,7 @@ fn main() {
         processes::superslicer::run(config);
     }
     if !*clap_args.get_one::<bool>("noupload").expect("clapdefault") {
-        moonraker::run(config);
+        moonraker::run(config, &pfrun);
     }
     println!("{}", "We're done!".green().bold());
 }

@@ -6,6 +6,8 @@ use std::io::prelude::*;
 use std::path::*;
 use std::time::Duration;
 use std::{fs, io::Write};
+use base64::{Engine as _, engine::general_purpose};
+
 struct Settings {
     recalculate_normals: bool,
     size_hint: bool,
@@ -84,7 +86,7 @@ fn get_thumb_from_file(path: String, gcode_path: PathBuf) {
     let mut f = File::open(path).expect("could not open file");
     let mut buf = Vec::new();
     f.read_to_end(&mut buf).expect("could not read file");
-    let b64buffer = base64::encode(&buf);
+    let b64buffer = general_purpose::STANDARD.encode(&buf);
     let mut b64buffer_to_write: String = ";\r\n".to_owned();
     b64buffer_to_write.push_str("; thumbnail begin 300x300 ");
     b64buffer_to_write.push_str(b64buffer.len().to_string().as_str());

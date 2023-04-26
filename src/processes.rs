@@ -168,7 +168,7 @@ pub mod superslicer {
         if isaccent.starts_with("platerflow_accent") {
             print!(
                 "{}",
-                "Running SuperSlicer on for the accent color on "
+                "Running SuperSlicer on "
                     .blue()
                     .bold()
             );
@@ -188,7 +188,7 @@ pub mod superslicer {
         } else {
             print!(
                 "{}",
-                "Running SuperSlicer on for the main color on "
+                "Running SuperSlicer on "
                     .blue()
                     .bold()
             );

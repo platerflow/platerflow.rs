@@ -26,6 +26,6 @@ base64 = "0.21.0"
 regex = "1.6.0"
 colored = "2"
 chrono = "0.4.24"
-clap = { version = "4.0.29", features = ["cargo"] }
+clap = { version = "4.3.1", features = ["cargo"] }
 openssl-sys = {version = "0.9.78", features = ["vendored"]}
 
